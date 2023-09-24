@@ -1,7 +1,7 @@
 # say-Complie
 One-Click Compile &amp; Run Custom Configuration
 
-## Setting (.vimrc | init.vim) 
+## Setting (.vimrc or init.vim) 
 > Plug 'sayTae/say-Compile'
 > 
 > " say-Compile setting  
