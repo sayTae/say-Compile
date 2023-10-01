@@ -5,7 +5,7 @@ func! CompileRun()
         " CompileRun Func
         if (&filetype == 'java')
                 exec "!javac -d ../bin %"
-                echo "compile is Completed!!"
+                echo "Compilation success!!"
                 " exec !java -cp ../bin %:r < ~/.config/nvim/input.txt"
 
         elseif (&filetype == 'python')
@@ -13,11 +13,13 @@ func! CompileRun()
 
         elseif (&filetype == 'c')
                 exec "!gcc % -o ../bin/%:r"
-                exec "!../bin/%:r < ~/.config/nvim/input.txt"
+				echo "Compilation success!!"
+                " exec !../bin/%:r < ~/.config/nvim/input.txt"
 
         elseif (&filetype == 'cpp')
                 exec "!g++ -std=c++11 % -o ../bin/%:r"
-                exec "!../bin/%:r < ~/.config/nvim/input.txt"
+				echo "Compilation success!!"
+                " exec !../bin/%:r < ~/.config/nvim/input.txt"
 
         endif
 
