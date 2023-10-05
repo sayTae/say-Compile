@@ -6,6 +6,8 @@ function! CompileRun()
 
     " 파일 확장자를 확인합니다
     let extension = fnamemodify(current_file, ':e')
+
+	" 결과물 파일의 경로를 지정합니다
 	let bin_file = fnameescape('../bin/' . fnamemodify(current_file, ':t:r'))
 
 
@@ -14,21 +16,23 @@ function! CompileRun()
 
     " 파일 확장자에 따라 적절한 컴파일 명령어를 설정합니다
     if extension ==# 'c'
-        " C 파일인 경우
         let compile_command = 'gcc ' . current_file . ' -o ' . bin_file
-    elseif extension ==# 'cpp'
-        " C++ 파일인 경우
+    
+	elseif extension ==# 'cpp'
         let compile_command = 'g++ -std=c++11 ' . current_file . ' -o ' . bin_file
-    elseif extension ==# 'java'
-        " Java 파일인 경우
-        let compile_command = 'javac -d ../bin ' . current_file
-    elseif extension ==# 'py'
-        " 파이썬 파일인 경우
+    
+	elseif extension ==# 'java'
+        let compile_command = 'javac ' . current_file . ' -d ../bin'
+    
+	elseif extension ==# 'py'
         let compile_command = 'python3 ' . current_file
-    else
+    
+	else
         " 지원하지 않는 확장자인 경우 에러 메시지 출력
         echomsg 'Unsupported file extension: ' . extension
-        return
+        
+		return
+
     endif
 
     " 컴파일 명령어를 실행하고 결과를 저장합니다
