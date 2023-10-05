@@ -1,35 +1,49 @@
 
-func! CompileRun()
-        exec "w"
+function! CompileRun()
+	
+    " 현재 파일명을 얻어옵니다
+    let current_file = expand('%')
 
-        " CompileRun Func
-        if (&filetype == 'java')
-                exec "!javac -d ../bin %"
-                echo "Compilation success!!"
-                " exec !java -cp ../bin %:r < ~/.config/nvim/input.txt"
+    " 파일 확장자를 확인합니다
+    let extension = fnamemodify(current_file, ':e')
+	let bin_file = fnameescape('../bin/' . fnamemodify(current_file, ':t:r'))
 
-        elseif (&filetype == 'python')
-                exec "!python3 % < ~/.config/nvim/input.txt"
 
-        elseif (&filetype == 'c')
-			exec "!gcc % -o ../bin/%:r"
-			" Check if the compilation was successful
-			if [ $? -eq 0 ]; then
-				" If compilation is successful, print a success message in green color
-				echo -e "\033[0;32mCompilation completed successfully!\033[0m"
-			else
-				" If compilation fails, print a failure message in red color
-				echo -e "\033[0;31mCompilation failed.\033[0m"
-			fi
-				" echo Compilation success!!"
+    " 컴파일 명령어를 초기화합니다
+    let compile_command = ''
 
-        elseif (&filetype == 'cpp')
-                exec "!g++ -std=c++11 % -o ../bin/%:r"
-				echo "Compilation success!!"
-                " exec !../bin/%:r < ~/.config/nvim/input.txt"
+    " 파일 확장자에 따라 적절한 컴파일 명령어를 설정합니다
+    if extension ==# 'c'
+        " C 파일인 경우
+        let compile_command = 'gcc ' . current_file . ' -o ' . bin_file
+    elseif extension ==# 'cpp'
+        " C++ 파일인 경우
+        let compile_command = 'g++ -std=c++11 ' . current_file . ' -o ' . bin_file
+    elseif extension ==# 'java'
+        " Java 파일인 경우
+        let compile_command = 'javac -d ../bin ' . current_file
+    elseif extension ==# 'py'
+        " 파이썬 파일인 경우
+        let compile_command = 'python3 ' . current_file
+    else
+        " 지원하지 않는 확장자인 경우 에러 메시지 출력
+        echomsg 'Unsupported file extension: ' . extension
+        return
+    endif
 
-        endif
+    " 컴파일 명령어를 실행하고 결과를 저장합니다
+    let compile_output = system(compile_command)
 
-endfunc
+    " 컴파일 결과를 출력합니다
+    if v:shell_error
+        " 컴파일 실패 시, 오류 메시지를 빨간색으로 출력합니다
+        echohl ErrorMsg | echomsg 'Compilation failed:' | echohl None
+		echo "\n" . compile_output
 
-let g:clang_options = '-std=c++11 -Wno-c++11-extensions'
+    else
+        " 컴파일 성공 시, 성공 메시지를 녹색으로 출력합니다
+        echohl MoreMsg | echomsg 'Compilation successful!' | echohl None
+
+    endif
+
+endfunction
