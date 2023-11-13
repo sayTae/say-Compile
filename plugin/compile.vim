@@ -1,6 +1,9 @@
 
 function! CompileRun()
 	
+	" 현재 파일을 저장합니다.
+	w
+	
     " 현재 파일명을 얻어옵니다
     let current_file = expand('%')
 
@@ -9,7 +12,6 @@ function! CompileRun()
 
 	" 결과물 파일의 경로를 지정합니다
 	let bin_file = fnameescape('../bin/' . fnamemodify(current_file, ':t:r'))
-
 
     " 컴파일 명령어를 초기화합니다
     let compile_command = ''
