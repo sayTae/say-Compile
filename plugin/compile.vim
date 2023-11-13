@@ -2,9 +2,9 @@
 function! CompileRun()
 	
 	" 현재 파일을 저장합니다.
-	w
-	
-    " 현재 파일명을 얻어옵니다
+	" w
+	silent! write
+
     let current_file = expand('%')
 
     " 파일 확장자를 확인합니다
