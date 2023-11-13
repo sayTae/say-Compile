@@ -2,7 +2,6 @@
 function! CompileRun()
 	
 	" 현재 파일을 저장합니다.
-	" w
 	silent! write
 
     let current_file = expand('%')
